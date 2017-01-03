@@ -30,6 +30,6 @@ def batch():
             image.save(filename)
             os.remove(new_file)
             client_new=boto3.resource('s3')
-            print(client_new.meta.client.upload_file(filename, 'awsome-batch', filename))
+            client_new.meta.client.upload_file(filename, 'awsome-batch', filename)
 
 batch()
