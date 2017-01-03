@@ -2,8 +2,7 @@ from __future__ import print_function
 
 from PIL import Image
 import os
-import json
-import urllib
+
 import boto3
 
 client = boto3.client('s3')
@@ -11,7 +10,7 @@ client = boto3.client('s3')
 bucket = "aft-vbi-pds"
 prefix='bin-images'
 
-def lambda_handler():
+def batch():
     response = client.list_objects_v2(
         Bucket=bucket,
         Prefix=prefix,
@@ -39,4 +38,4 @@ def lambda_handler():
     print(asd)
 
 
-lambda_handler()
+batch()
