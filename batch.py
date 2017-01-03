@@ -14,28 +14,22 @@ def batch():
     response = client.list_objects_v2(
         Bucket=bucket,
         Prefix=prefix,
-        MaxKeys=1,
-
+        MaxKeys=2,
     )
     for image in response['Contents']:
         if "jpg" in image['Key']:
             print(image['Key'])
 
             new_file=image['Key'].split('/',2)[1]
-            print (new_file)
             client.download_file(bucket, image['Key'], new_file)
 
             image = Image.open(new_file)
             image = image.convert('L')
             (name, extension) = os.path.splitext(new_file)
-            image.save(name + '_changed' + extension)
+            filename = (name + '_changed' + extension)
+            image.save(filename)
             os.remove(new_file)
-
-    asd = client.get_object(
-        Bucket=bucket,
-        Key=(image['Key']),
-)
-    print(asd)
-
+            client_new=boto3.resource('s3')
+            print(client_new.meta.client.upload_file(filename, 'awsome-batch', filename))
 
 batch()
